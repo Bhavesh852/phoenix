@@ -1,0 +1,23 @@
+{% extends 'feed/layout.html' %}
+
+{% load static %} 
+
+{% block content %}
+
+<section class="container my-5">
+	<div>
+		<h2><u>{{event.name}}</u></h2>
+		<p>Organized By : {{event.user.username}}</p>
+		<p>Starting Date : {{event.start_date}}</p>
+		<p>Ending date : {{event.expiry_date}}</p>
+		<hr>
+		<p>{{event.description}}</p>
+	</div>
+	<div>
+		<h4>For participation or any kind of Query,<br> Please drop a mail on <a href="mailto:{{event.user.email}}">{{event.user.email}}</a> or contact to <a href="tel:{{event.phone}}">{{event.phone}}</a></h4>
+	</div>
+
+</section>
+
+
+{% endblock content %}

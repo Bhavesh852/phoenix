@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>PHOENIX</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .wrapper {
+            width: 1170px;
+            margin: auto;
+        }
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url({% static 'feed/coverpage.jpg' %});
+            height: 100vh;
+            width: ;
+            -webkit-background-size: cover;
+            background-size: cover;
+            background-position: center center;
+            position: relative;
+        }
+        .logo {
+            float: left;
+        }
+        .logo img {
+            width: 50%;
+            padding: 15px 0;
+        }
+        .welcome-text {
+            position: absolute;
+            width: 600px;
+            height: 300px;
+            margin: 20% 30%;
+            text-align: center;
+        }
+        .welcome-text h1 {
+            text-align: center;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 60px;
+        }
+        .welcome-text h1 span {
+            color: #00fecb;
+        }
+        .welcome-text a {
+            border: 1px solid #fff;
+            padding: 10px 25px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 14px;
+            margin-top: 20px;
+            display: inline-block;
+            color: #fff;
+        }
+        .welcome-text a:hover {
+            background: #fff;
+            color: #333;
+        }
+        /*resposive*/
+
+        @media (max-width:600px) {
+            .wrapper {
+                width: 100%;
+            }
+            .logo {
+                float: none;
+                width: 50%;
+                text-align: center;
+                margin: auto;
+            }
+            img {
+                width: ;
+            }
+            .nav-area {
+                float: none;
+                margin-top: 0;
+            }
+            .nav-area li a {
+                padding: 5px;
+                font-size: 11px;
+            }
+            .nav-area {
+                text-align: center;
+            }
+            .welcome-text {
+                width: 100%;
+                height: auto;
+                margin: 30% 0;
+            }
+            .welcome-text h1 {
+                font-size: 30px;
+            }
+        }
+    </style>    
+</head>
+<body>
+    
+    <header>
+    <div class="wrapper">
+        <div class="logo">
+            <img src="{% static 'feed/1.png' %}" alt="">
+        </div>
+        <!-- <img src="{% static 'myapp/coverpage.jpg' %}" alt=""> -->
+
+</div>
+{% for message in messages %}
+        <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert">
+            <strong>Message : </strong> {{ message }}
+            <button  style="border-radius: 0.5in;"type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>  
+    {% endfor %}
+    
+
+<div class="welcome-text">
+
+<h1>
+We are <span>phoenix</span></h1>
+<a href="/home/">Welcome! </a>
+    </div>
+</header>
+
+</body>
+</html>

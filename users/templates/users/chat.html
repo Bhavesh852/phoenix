@@ -1,0 +1,204 @@
+
+{% load static %}
+
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+      <style>
+        /**{
+            margin: 0;
+            padding: 0;
+        }
+.wrapper {
+            width: 1170px;
+            margin: auto;
+        } */
+
+.header {
+  background-color: #bfd7d9;
+  text-align: center;
+  /*padding: 20px;*/
+}
+
+/* .main {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url({% static 'feed/coverpage.jpg' %});
+            height: 100vh;
+            -webkit-background-size: cover;
+            background-size: cover;
+            background-position: center center;
+            position: relative;
+        }  */
+     /* The side navigation menu */
+     
+.sidenav {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #32959a; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+/* The navigation menu links */
+.sidenav a {
+  padding: 10px 5px 8px 29px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #bfd7d9;
+  display: block;
+  transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 15px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+  transition: margin-left .8s;
+  
+  padding: 10px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+} 
+  
+  </style>
+    <title>Phoenix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  </head>
+
+  <body style="background-color: #111;">
+<div class="card" id="card">
+  	<div class="card-header bg-dark text-light">
+    	<span class="btn btn-dark ml-3" style="font-size:15px;cursor:pointer" onclick="openNav()">&#9776;</span>
+    	Chat Box
+  	</div>
+  	<div class="card-body" style="height: 75vh; overflow: scroll; background-color: #8fb8bc;" id="com_box">
+  		{% for i in chat %}
+  			{% if i.u_to.user.username in l1 and i.u_from.username in l1 %}
+  				<div class="container w-100 row">
+  					<div class="col-12">
+		  				<div class="card my-2 w-50 float-right">
+		  					<div class="card-header bg-dark text-light ">{{i.u_from.username}}</div>
+		  					<div class="card-body" style="background-color: #dfd7d9;">
+		  						{{ i.message }}
+		  					</div>
+		  				</div>
+	  				</div>
+  				</div>
+  			{% endif %}
+  		{% endfor %}
+	</div>
+	<div class="card-footer bg-dark" id="card-footer">
+		<form action="/chatbox/{{myid}}/" method="POST">
+			{% csrf_token %}
+	  		<div class="form-group row">
+	  			<div class="col-md-10 col-12">
+	  				<input class="form-control" type="text" autocomplete="off" name="msg" placeholder="Your message..." >
+	  			</div>
+	  			<div class="col-md-2 col-12">
+	  				<button type="submit" class="btn btn-primary">Send</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+
+
+<!-- <Body background="({% static 'feed/coverpage.jpg' %})">    -->
+      <div id="mySidenav" class="sidenav">
+
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      
+      <a class="text-center" id="lgo" href="{% url 'home' %}">
+      <img src="{% static 'feed/1.png' %}" height="100vh" ></a>
+      {% if user.is_authenticated %}
+      <p class="text-info text-center">USER : {{ user }} </p>
+  
+      <a class="active" href="{% url 'home' %}"><i class="fas fa-home mr-2"></i>Home</a>
+      
+      <a href="{% url 'my_profile' %}"><i class="fas fa-user mr-2"></i>Profile</a>
+     
+      <a href="{% url 'friend_list' %}"><i class="fas fa-user-friends mr-2"></i>Friends</a>
+      
+      <a href="{% url 'post-create' %}"><i class="fas fa-images mr-2"></i>Create Post</a>
+      
+      <a href="{% url 'users_list' %}"><i class="fas fa-user-plus mr-2"></i>Add New Friends</a>
+      
+      <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt mr-2"></i></i>Signout</a>
+      <hr>
+      
+      <div class="icons">
+        <a  style="display: inline;"href="#"><i class="fab fa-facebook-f " ></i></a>
+        <a style="display: inline;" href="#"><i class="fab fa-twitter" ></i></a>
+        <a  style="display: inline;" href="#"><i class="fab fa-whatsapp" ></i></a>
+        <a  style="display: inline;" href="#"><i class="fab fa-instagram" ></i></a>
+      </div>
+      {% else %}
+          <a href="{% url 'login' %}" >Login</a>
+          <a href="{% url 'register' %} " >Register</a>
+      {% endif %} 
+
+    </div>
+
+    <!-- JS Files -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+   <script>/* Set the width of the side navigation to 250px */
+    function openNav() {
+      document.getElementById("mySidenav").style.width = "250px";
+    }
+    
+    // /* Set the width of the side navigation to 0 */
+    function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+    }
+
+    var a = document.getElementById('com_box');
+		a.scrollTop = a.scrollHeight;
+
+		$(document).ready(function(){
+		  $('[data-toggle="popover"]').popover();
+		});
+
+
+	</script> 
+
+  </body>
+</html>
+
+

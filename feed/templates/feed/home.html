@@ -1,0 +1,170 @@
+{% extends "feed/layout.html" %} {% load static %} 
+<style>
+  
+  p {
+  margin: 40px 380px;
+}
+
+</style>
+
+{% block content %}
+<p>
+<div class="">
+  <div class="row">
+    <div class="col-md-8">
+      {% for post in posts %}
+      <div class="card bg-light card-signin my-5 mr-5" id="cd">
+        <div class="card-body">
+          <a href="{{ post.user_name.profile.get_absolute_url }}"
+            ><img
+              src="{{ post.user_name.profile.image.url }}"
+              class="rounded-circle"
+              width="30"
+              height="30"
+              alt=""
+          /></a>
+          <a
+            class="text-dark"
+            href="{{ post.user_name.profile.get_absolute_url }}"
+            ><b>{{ post.user_name }}</b></a
+          >
+          <br /><small class="text-muted"
+            >Posted on {{ post.date_posted }}</small
+          >
+          <br />
+          <p class="card-text text-dark">{{ post.description }}</p>
+        </div>
+        <a href="{% url 'post-detail' post.id %}"
+          ><img class="card-img-top" src="{{ post.pic.url }}" alt=""
+        /></a>
+        {% if post.tags %}
+        <br />
+        <p class="text-danger ml-3">
+          <b>Tags: <i>{{ post.tags }}</i></b>
+        </p>
+        {% endif %}
+        <div class="card-footer">
+          <button class="btn btn-white mr-3 like" id="{{ post.id }}">
+            {% if post in liked_post %}
+            <a
+              href="{% url 'post-like' %}"
+              style="color: red"
+              id="likebtn{{ post.id }}"
+            >
+              Unlike</a
+            >
+            | {{post.likes.count}} {% else %}
+            <a
+              href="{% url 'post-like' %}"
+              style="color: green"
+              id="likebtn{{ post.id }}"
+            >
+              Like</a
+            >
+            | {{post.likes.count}} {% endif %}
+          </button>
+          <a class="btn btn-outline-info" href="{% url 'post-detail' post.id %}"
+            >Comments | {{ post.details.count }}</a
+          >
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="col-md-4">
+    <div class="sidebar">
+      
+      <div class="text-center"><img src="{%static '1.png'%}" height="100vh" ></div>
+      {% if user.is_authenticated %}
+      <div><h3 class="my-2 text-center"><u>Up-Coming Events</u></h3></div>
+      <table class="table table-striped table-hover table-light shadow my-5 overflow-auto">
+        <thead>
+          <tr>
+            <th scope="col">Event-name</th>
+            <th scope="col">Organized-by</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <div class="float-right"><a href="/refresh/" class="btn btn-warning mx-2">Refresh</a></div>
+          
+            {% for i in event %} 
+              <tr>
+                <td>{{i.name}}</td>
+                <td>{{i.user.username}}</td>
+                <td><a href="/viewevent/{{i.id}}/" class="btn btn-info">View</a></td>
+              </tr>
+            {% endfor %}
+          
+        </tbody>
+
+      </table>
+    {% endif %}
+    <marquee class="mx-3" width="90%" direction="up" height="80%">
+      This is a sample scrolling text that has scrolls in the upper direction.
+    </marquee>
+          
+    </div>
+   </div>
+  </div>
+</div>
+</p>
+
+{% if is_paginated %} 
+	{% if page_obj.has_previous %}
+		<a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+		<a
+		  class="btn btn-outline-info mb-4"
+		  href="?page={{ page_obj.previous_page_number }}"
+		  >Previous</a
+		>
+	{% endif %}
+	{% for num in page_obj.paginator.page_range %}
+		{% if page_obj.number == num %}
+			<a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+		{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+			<a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+		{% endif %}
+	{% endfor %}
+
+	{% if page_obj.has_next %}
+		<a
+		  class="btn btn-outline-info mb-4"
+		  href="?page={{ page_obj.next_page_number }}"
+		  >Next</a
+		>
+		<a
+		  class="btn btn-outline-info mb-4"
+		  href="?page={{ page_obj.paginator.num_pages }}"
+		  >Last</a
+		>
+	{% endif %}
+
+{% endif %} 
+
+{% endblock content %} 
+
+{% block jsfiles %}
+<script>
+  $(".like").click(function (e) {
+    var id = this.id;
+    var href = $(".like").find("a").attr("href");
+    e.preventDefault();
+
+    $.ajax({
+      url: href,
+      data: {
+        likeId: id,
+      },
+      success: function (response) {
+        if (response.liked) {
+          $("#likebtn" + id).html("Unlike");
+          $("#likebtn" + id).css("color", "red");
+        } else {
+          $("#likebtn" + id).html("Like");
+          $("#likebtn" + id).css("color", "green");
+        }
+      },
+    });
+  });
+</script>
+{% endblock jsfiles %}

@@ -1,0 +1,284 @@
+
+{% load static %}
+
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+      <style>
+        /**{
+            margin: 0;
+            padding: 0;
+        }
+.wrapper {
+            width: 1170px;
+            margin: auto;
+        } */
+
+.header {
+  background-color: #bfd7d9;
+  /*background-color: white*/
+  text-align: center;
+  /*padding: 20px;*/
+}
+
+/* .main {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url({% static 'feed/coverpage.jpg' %});
+            height: 100vh;
+            -webkit-background-size: cover;
+            background-size: cover;
+            background-position: center center;
+            position: relative;
+        }  */
+     /* The side navigation menu */
+     
+.sidenav {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #32959a; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+/* The navigation menu links */
+.sidenav a {
+  padding: 10px 5px 8px 29px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #bfd7d9;
+  display: block;
+  transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 15px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+  transition: margin-left .8s;
+  
+  padding: 10px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+} 
+
+.sidebar {
+  /*margin-bottom: 2%;*/
+  padding: 0;
+  width: 33%;
+  
+  position: fixed;
+  height: 80%;
+  background: transparent;
+  overflow: auto;
+  
+  /*border-right: 1px solid #ccc;*/
+  background-color: #fff;
+  opacity: 0.8;
+  z-index: 10;
+}
+
+
+#lgo:hover:not(.active){
+  
+}
+
+
+
+       {% block cssfiles %}
+       {% endblock %}
+  
+  </style>
+
+
+  <!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">EVENT :)</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          
+          <form action="/event/" method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+              <input type="text" class="form-control" name="event" placeholder="Event name...">
+            </div>
+            <div class="mb-3">
+              <input type="tel" class="form-control" name="phone" placeholder="Contact number">
+            </div>
+            <div class="mb-3">
+              <label for="sdate">Starting Date :</label>
+              <input type="date" class="form-control" name="sdate" id="sdate">
+            </div>
+            <div class="mb-3">
+              <label for="edate">Ending Date :</label>
+              <input type="date" class="form-control" name="edate" id="edate">
+            </div>
+            <div class="mb-3">
+              <textarea class="form-control" placeholder="Brief Description about event..." name="desc" rows="3"></textarea>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-info">Add Event</button>
+            </div>
+
+          </form>
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top shadow">
+    <img src="{%static '1.png'%}" width="80" height="80" class="d-inline-block align-top" alt="">
+    <form class="d-flex mx-5" action="{% url 'search_posts' %}" method="get">
+        <input class="form-control me-2" type="search" name="p" placeholder="Search by tag" aria-label="Search">
+        <button class="btn btn-outline-success ml-2" type="submit">Search</button>
+      </form>
+    
+    
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            
+        </ul>
+        <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+        <li class="nav-item active">
+            <a class="nav-link active" href="{% url 'home' %}">Home<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'my_profile' %}">Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'friend_list' %}">Friends</a>
+        </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'post-create' %}">Create Post</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'users_list' %}">Add New Friends</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link btn" type="button" data-toggle="modal" data-target="#myModal">Add Event</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-outline-danger" href="{% url 'logout' %}">Signout</a>
+            </li>
+        {% else %}
+          <li class="nav-item active">
+            <a class="nav-link active" href="{% url 'home' %}">Home<span class="sr-only">(current)</span></a>
+        </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}" >Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %} " >Register</a>
+            </li>
+        {% endif %}
+        </ul>
+        
+    </div>
+</nav>
+    <title>Phoenix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  </head>
+
+  <body style="background-color: #bfd7d9;">
+    
+    
+    {% block searchform %}
+
+
+
+{% endblock searchform %} 
+    
+      
+      
+      
+
+    <!--
+    <div class="icons">
+        <a  style="display: inline;"href="#"><i class="fab fa-facebook-f " ></i></a>
+        <a style="display: inline;" href="#"><i class="fab fa-twitter" ></i></a>
+        <a  style="display: inline;" href="#"><i class="fab fa-whatsapp" ></i></a>
+        <a  style="display: inline;" href="#"><i class="fab fa-instagram" ></i></a>
+      </div> -->
+    <!-- <span onclick="openNav()">open</span> -->
+    
+    
+    <div class="container">{% block content %}{% endblock content %}</div>
+
+    <footer class="page-footer font-small black">
+      <div class="footer-copyright text-center py-3">
+        Phoenix- GamersConnect © 2021 <br /><small class="text-muted"
+          >All rights reserved!</small
+        >
+      </div>
+    </footer>
+
+    <!-- JS Files -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+   <script>/* Set the width of the side navigation to 250px */
+    function openNav() {
+      document.getElementById("mySidenav").style.width = "250px";
+    }
+    
+    // /* Set the width of the side navigation to 0 */
+    function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+    }</script> 
+    {% block jsfiles %}{% endblock jsfiles %}
+  </body>
+</html>
+
